@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="az" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CaspianDiv — Habit Tracker</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- CSS Link -->
+     <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- ===== INTRO ===== -->
+    <div id="intro">
+      <div class="intro-logo">CaspianDiv</div>
+      <div class="intro-tag">Proqramçı · Habit Tracker</div>
+      <div class="intro-line"></div>
+      <div class="intro-dots">
+        <div class="intro-dot"></div>
+        <div class="intro-dot"></div>
+        <div class="intro-dot"></div>
+      </div>
+    </div>
+
+    <!-- ===== APP ===== -->
+    <div id="app">
+      <!-- HEADER -->
+      <header>
+        <div class="hdr-left">
+          <div class="avatar">
+            <img class="logo" src="https://portfolio-two-tau-add0vjn7m9.vercel.app/assets/logo-XaqfjzCx.png" alt="logo" />
+          </div>
+          <div>
+            <div class="hdr-name">CaspianDiv</div>
+            <div class="hdr-sub">
+              // Front-End Dev · Full Stack Developer Yolunda · 2024→
+            </div>
+          </div>
+        </div>
+
+        <div class="hdr-center">
+          <div class="badge-pill">
+            <div class="badge-num" id="sfBadgeNum">2</div>
+            <div class="badge-lbl">Gün<br />Sigaretsiz 🚭</div>
+          </div>
+          <div class="badge-pill code-badge">
+            <div class="badge-num" id="codeBadgeNum">2+</div>
+            <div class="badge-lbl">İl<br />Kodlama 💻</div>
+          </div>
+        </div>
+
+        <div class="hdr-right">
+          <div class="date-box">
+            <div class="date-main" id="hdrDate"></div>
+            <div class="date-time" id="hdrTime"></div>
+          </div>
+          <button
+            class="theme-btn"
+            id="themeBtn"
+            onclick="toggleTheme()"
+            title="Tema dəyiş"
+          >
+            🌙
+          </button>
+        </div>
+      </header>
+
+      <!-- RAMADAN BANNER -->
+      <div class="ram-banner">
+        <div class="ram-icon">🌙</div>
+        <div class="ram-info">
+          <div class="ram-title">Ramazan Mübarək, CaspianDiv!</div>
+          <div class="ram-sub">
+            Oruc tutmaq siqareti tərgiməyə böyük kömək edir. İradən güclüdür —
+            Allah qəbul eləsin! 🤲
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN GRID -->
+      <div class="main-grid">
+        <!-- LEFT COLUMN -->
+        <div class="left-col">
+          <!-- TODAY HABITS -->
+          <div class="card">
+            <div class="card-title">
+              <div class="ctdot"></div>
+              Bu Günün Vərdişləri
+            </div>
+
+            <div
+              class="habit-item"
+              id="th-smoke"
+              onclick="openModal(getTodayKey())"
+            >
+              <div
+                class="habit-icon"
+                style="background: rgba(16, 185, 129, 0.1)"
+              >
+                🚭
+              </div>
+              <div class="habit-info">
+                <div class="habit-name">Sigaretsiz Gün</div>
+                <div class="habit-desc" id="td-smoke-desc">
+                  Heç çəkmədim / Çəkdim
+                </div>
+              </div>
+              <div class="habit-check" id="tc-smoke">—</div>
+            </div>
+
+            <div
+              class="habit-item"
+              id="th-sport"
+              onclick="openModal(getTodayKey())"
+            >
+              <div
+                class="habit-icon"
+                style="background: rgba(245, 158, 11, 0.1)"
+              >
+                🏋️
+              </div>
+              <div class="habit-info">
+                <div class="habit-name">İdman / Məşq</div>
+                <div class="habit-desc">Fiziki aktivlik etdim</div>
+              </div>
+              <div class="habit-check" id="tc-sport">—</div>
+            </div>
+
+            <div
+              class="habit-item"
+              id="th-code"
+              onclick="openModal(getTodayKey())"
+            >
+              <div
+                class="habit-icon"
+                style="background: rgba(129, 140, 248, 0.1)"
+              >
+                💻
+              </div>
+              <div class="habit-info">
+                <div class="habit-name">Kodlama</div>
+                <div class="habit-desc">Proqramlaşdırma ilə məşğul oldum</div>
+              </div>
+              <div class="habit-check" id="tc-code">—</div>
+            </div>
+
+            <div
+              class="habit-item"
+              id="th-fast"
+              onclick="openModal(getTodayKey())"
+            >
+              <div
+                class="habit-icon"
+                style="background: rgba(6, 182, 212, 0.1)"
+              >
+                🌙
+              </div>
+              <div class="habit-info">
+                <div class="habit-name">Oruc</div>
+                <div class="habit-desc">Bu gün oruc tutdum</div>
+              </div>
+              <div class="habit-check" id="tc-fast">—</div>
+            </div>
+
+            <div class="today-note">
+              <span>📅</span> Keçmiş günü redaktə etmək üçün təqvimə bas
+            </div>
+          </div>
+
+          <!-- MILESTONE -->
+          <div class="card">
+            <div class="milestone-card">
+              <div class="ms-title">💻 Kodlama Yolu</div>
+
+              <div class="ms-item">
+                <div class="ms-dot" style="background: var(--smoke-c)"></div>
+                <div class="ms-text">
+                  Front-End Development — HTML5, CSS3, Vanilla JS, React JS , jQuery 
+                </div>
+                <div class="ms-badge ms-done">✅ Bitdi</div>
+              </div>
+              <div class="ms-item">
+                <div class="ms-dot" style="background: var(--sport-c)"></div>
+                <div class="ms-text">
+                  1-ci dərəcəli diplom sertifikatı — Sentyabr 2025
+                </div>
+                <div class="ms-badge ms-done">🏆 Alındı</div>
+              </div>
+              <div class="ms-item">
+                <div class="ms-dot" style="background: var(--blue)"></div>
+                <div class="ms-text">Node.js , MySql , Mongo DB , Express JS , Mongoose Backend — 2026 May da başlayır</div>
+                <div class="ms-badge ms-active">🚀 Növbəti</div>
+              </div>
+              <div class="ms-item">
+                <div class="ms-dot" style="background: var(--smoke-c)"></div>
+                <div class="ms-text">
+                  Sigaretsiz həyat — 21 Fevral 2026-dan başlayıb
+                </div>
+                <div class="ms-badge ms-active">💪 Davam edir</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-col">
+          <!-- STATS -->
+          <div class="card">
+            <div class="card-title">
+              <div class="ctdot"></div>
+              Ümumi Statistika
+            </div>
+            <div class="stats-grid">
+              <div class="stat-box sb-smoke">
+                <div class="stat-emoji">🚭</div>
+                <div class="stat-num" id="s-smoke">0</div>
+                <div class="stat-label">Sigaretsiz gün</div>
+                <div class="stat-streak" id="ss-smoke">— gün streak</div>
+              </div>
+              <div class="stat-box sb-sport">
+                <div class="stat-emoji">🏃</div>
+                <div class="stat-num" id="s-sport">0</div>
+                <div class="stat-label">İdman günü</div>
+                <div class="stat-streak" id="ss-sport">— gün streak</div>
+              </div>
+              <div class="stat-box sb-code">
+                <div class="stat-emoji">⌨️</div>
+                <div class="stat-num" id="s-code">0</div>
+                <div class="stat-label">Kodlama günü</div>
+                <div class="stat-streak" id="ss-code">— gün streak</div>
+              </div>
+              <div class="stat-box sb-fast">
+                <div class="stat-emoji">🌙</div>
+                <div class="stat-num" id="s-fast">0</div>
+                <div class="stat-label">Oruc günü</div>
+                <div class="stat-streak" id="ss-fast">— gün streak</div>
+              </div>
+            </div>
+
+            <div class="prog-section">
+              <div class="prog-row">
+                <div class="prog-hdr">
+                  <span>🚭 Sigaretsiz faizi</span><span id="pp-smoke">0%</span>
+                </div>
+                <div class="prog-bar">
+                  <div
+                    class="prog-fill pf-smoke"
+                    id="pf-smoke"
+                    style="width: 0"
+                  ></div>
+                </div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-hdr">
+                  <span>🏃 İdman faizi</span><span id="pp-sport">0%</span>
+                </div>
+                <div class="prog-bar">
+                  <div
+                    class="prog-fill pf-sport"
+                    id="pf-sport"
+                    style="width: 0"
+                  ></div>
+                </div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-hdr">
+                  <span>💻 Kodlama faizi</span><span id="pp-code">0%</span>
+                </div>
+                <div class="prog-bar">
+                  <div
+                    class="prog-fill pf-code"
+                    id="pf-code"
+                    style="width: 0"
+                  ></div>
+                </div>
+              </div>
+              <div class="prog-row">
+                <div class="prog-hdr">
+                  <span>🌙 Oruc faizi</span><span id="pp-fast">0%</span>
+                </div>
+                <div class="prog-bar">
+                  <div
+                    class="prog-fill pf-fast"
+                    id="pf-fast"
+                    style="width: 0"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CALENDAR -->
+          <div class="card">
+            <div class="cal-nav">
+              <button class="cal-arrow" id="calPrev" onclick="changeMonth(-1)">
+                ◀
+              </button>
+              <div class="cal-month" id="calTitle">Fevral 2026</div>
+              <button class="cal-arrow" id="calNext" onclick="changeMonth(1)">
+                ▶
+              </button>
+            </div>
+            <div class="cal-grid" id="calGrid">
+              <div class="cal-dname">B.E</div>
+              <div class="cal-dname">Ç.A</div>
+              <div class="cal-dname">Ç</div>
+              <div class="cal-dname">C.A</div>
+              <div class="cal-dname">C</div>
+              <div class="cal-dname">Ş</div>
+              <div class="cal-dname">B</div>
+            </div>
+            <!-- Legend -->
+            <div
+              style="
+                display: flex;
+                gap: 14px;
+                margin-top: 14px;
+                flex-wrap: wrap;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  font-size: 0.65rem;
+                  color: var(--text3);
+                "
+              >
+                <div
+                  style="
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 3px;
+                    background: rgba(16, 185, 129, 0.3);
+                  "
+                ></div>
+                Mükəmməl
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  font-size: 0.65rem;
+                  color: var(--text3);
+                "
+              >
+                <div
+                  style="
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 3px;
+                    background: rgba(245, 158, 11, 0.25);
+                  "
+                ></div>
+                Qismən
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  font-size: 0.65rem;
+                  color: var(--text3);
+                "
+              >
+                <div
+                  style="
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 3px;
+                    background: rgba(14, 165, 233, 0.2);
+                    border: 1px solid var(--blue);
+                  "
+                ></div>
+                Bu gün
+              </div>
+            </div>
+          </div>
+
+          <!-- CHART -->
+          <div class="card">
+            <div class="card-title">
+              <div class="ctdot"></div>
+              Son 14 Gün Aktivliyi
+            </div>
+            <div class="chart-container" id="chartContainer"></div>
+            <div
+              style="
+                display: flex;
+                gap: 16px;
+                margin-top: 12px;
+                flex-wrap: wrap;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  font-size: 0.68rem;
+                  color: var(--text3);
+                "
+              >
+                <div
+                  style="
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 3px;
+                    background: var(--smoke-c);
+                  "
+                ></div>
+                🚭 Sigaret
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  font-size: 0.68rem;
+                  color: var(--text3);
+                "
+              >
+                <div
+                  style="
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 3px;
+                    background: var(--sport-c);
+                  "
+                ></div>
+                🏃 İdman
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  font-size: 0.68rem;
+                  color: var(--text3);
+                "
+              >
+                <div
+                  style="
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 3px;
+                    background: var(--code-c);
+                  "
+                ></div>
+                💻 Kod
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  font-size: 0.68rem;
+                  color: var(--text3);
+                "
+              >
+                <div
+                  style="
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 3px;
+                    background: var(--fast-c);
+                  "
+                ></div>
+                🌙 Oruc
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div
+      class="modal-overlay"
+      id="modalOverlay"
+      onclick="handleOverlayClick(event)"
+    >
+      <div class="modal" id="modal">
+        <div class="modal-top">
+          <div>
+            <div class="modal-date-big" id="modalDateBig">—</div>
+            <div class="modal-date-sub" id="modalDateSub">—</div>
+          </div>
+          <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-sep"></div>
+
+        <!-- Smoke -->
+        <div style="margin-bottom: 10px">
+          <div
+            style="
+              font-size: 0.7rem;
+              color: var(--text3);
+              text-transform: uppercase;
+              letter-spacing: 1.5px;
+              font-weight: 700;
+              margin-bottom: 8px;
+            "
+          >
+            🚭 Siqaret
+          </div>
+          <div class="smoke-options">
+            <div class="smoke-opt" id="opt-free" onclick="setSmokeOpt('free')">
+              🚭 Çəkmədim
+            </div>
+            <div class="smoke-opt" id="opt-fail" onclick="setSmokeOpt('fail')">
+              🚬 Çəkdim
+            </div>
+            <div
+              class="smoke-opt"
+              id="opt-none"
+              onclick="setSmokeOpt('none')"
+              style="flex: 0.5; font-size: 0.7rem"
+            >
+              —
+            </div>
+          </div>
+        </div>
+
+        <!-- Sport -->
+        <div class="modal-habit" id="mh-sport" onclick="toggleModal('sport')">
+          <div class="modal-hicon">🏋️</div>
+          <div class="modal-hname">İdman / Məşq etdim</div>
+          <div class="modal-toggle" id="mt-sport"></div>
+        </div>
+
+        <!-- Code -->
+        <div class="modal-habit" id="mh-code" onclick="toggleModal('code')">
+          <div class="modal-hicon">💻</div>
+          <div class="modal-hname">Kodlama etdim</div>
+          <div class="modal-toggle" id="mt-code"></div>
+        </div>
+
+        <!-- Fast -->
+        <div class="modal-habit" id="mh-fast" onclick="toggleModal('fast')">
+          <div class="modal-hicon">🌙</div>
+          <div class="modal-hname">Oruc tutdum</div>
+          <div class="modal-toggle" id="mt-fast"></div>
+        </div>
+
+        <button class="modal-save-btn" onclick="saveModal()">
+          💾 Yadda saxla
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+      /* ============================================================
+   STORAGE
+   ============================================================ */
+      const STORE_KEY = "caspianDiv_v2";
+      const SMOKE_START = "2026-02-21";
+      const CODE_START = "2024-01-01";
+
+      function getData() {
+        try {
+          return JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+        } catch {
+          return {};
+        }
+      }
+      function saveData(d) {
+        localStorage.setItem(STORE_KEY, JSON.stringify(d));
+      }
+      function getDayObj(key) {
+        const d = getData();
+        // smoke: 'free' | 'fail' | null
+        return (
+          d[key] || { smoke: null, sport: false, code: false, fast: false }
+        );
+      }
+      function setDayObj(key, obj) {
+        const d = getData();
+        d[key] = obj;
+        saveData(d);
+      }
+
+      /* ============================================================
+   DATE HELPERS
+   ============================================================ */
+      const AZ_DAYS = [
+        "Bazar",
+        "Bazar ertəsi",
+        "Çərşənbə axşamı",
+        "Çərşənbə",
+        "Cümə axşamı",
+        "Cümə",
+        "Şənbə",
+      ];
+      const AZ_MONTHS = [
+        "Yanvar",
+        "Fevral",
+        "Mart",
+        "Aprel",
+        "May",
+        "İyun",
+        "İyul",
+        "Avqust",
+        "Sentyabr",
+        "Oktyabr",
+        "Noyabr",
+        "Dekabr",
+      ];
+
+      function getTodayKey() {
+        const n = new Date();
+        return fmtKey(n.getFullYear(), n.getMonth() + 1, n.getDate());
+      }
+      function fmtKey(y, m, d) {
+        return (
+          y +
+          "-" +
+          String(m).padStart(2, "0") +
+          "-" +
+          String(d).padStart(2, "0")
+        );
+      }
+      function keyToDate(key) {
+        const [y, m, d] = key.split("-").map(Number);
+        return new Date(y, m - 1, d);
+      }
+      function isFuture(key) {
+        return key > getTodayKey();
+      }
+
+      /* ============================================================
+   HEADER DATE/TIME
+   ============================================================ */
+      function updateHeaderTime() {
+        const n = new Date();
+        document.getElementById("hdrDate").textContent =
+          AZ_DAYS[n.getDay()] +
+          ", " +
+          n.getDate() +
+          " " +
+          AZ_MONTHS[n.getMonth()] +
+          " " +
+          n.getFullYear();
+        document.getElementById("hdrTime").textContent = n.toLocaleTimeString(
+          "az",
+          { hour: "2-digit", minute: "2-digit", second: "2-digit" },
+        );
+      }
+
+      /* ============================================================
+   RAMADAN
+   ============================================================ */
+      function updateRamadan() {
+        const now = new Date();
+        const ramStart = new Date("2026-03-01");
+        const ramEnd = new Date("2026-03-30");
+        const lbl = document.getElementById("ramLabel");
+        if (now < ramStart) {
+          const diff = Math.ceil((ramStart - now) / 86400000);
+          el.textContent = diff + " gün";
+          lbl.textContent = "Ramazana qaldı";
+        } else if (now <= ramEnd) {
+          const day = Math.floor((now - ramStart) / 86400000) + 1;
+          el.textContent = day + ". gün";
+          lbl.textContent = "Ramazanda 🌙";
+        } else {
+          el.textContent = "✅ Bitdi";
+          lbl.textContent = "Ramazan 2026";
+        }
+      }
+
+      /* ============================================================
+   SMOKE-FREE BADGE
+   ============================================================ */
+      function updateSmokeBadge() {
+        const data = getData();
+        // Count consecutive 'free' days back from today
+        let count = 0;
+        let d = new Date();
+        for (let i = 0; i < 365; i++) {
+          const key = fmtKey(d.getFullYear(), d.getMonth() + 1, d.getDate());
+          const obj = data[key];
+          if (obj && obj.smoke === "free") {
+            count++;
+            d.setDate(d.getDate() - 1);
+          } else if (!obj && key <= getTodayKey()) {
+            break;
+          } else if (key > getTodayKey()) {
+            d.setDate(d.getDate() - 1);
+            continue;
+          } else break;
+        }
+        // Minimum based on known start
+        const start = new Date(SMOKE_START);
+        const now = new Date();
+        const sinceDiff = Math.floor((now - start) / 86400000);
+        document.getElementById("sfBadgeNum").textContent = Math.max(
+          count,
+          sinceDiff,
+        );
+      }
+
+      /* ============================================================
+   TODAY CARD RENDER
+   ============================================================ */
+      function renderToday() {
+        const key = getTodayKey();
+        const obj = getDayObj(key);
+
+        // Smoke
+        const th_smoke = document.getElementById("th-smoke");
+        const tc_smoke = document.getElementById("tc-smoke");
+        const tdsd = document.getElementById("td-smoke-desc");
+        th_smoke.className = "habit-item";
+        if (obj.smoke === "free") {
+          th_smoke.classList.add("done-smoke");
+          tc_smoke.textContent = "🚭";
+          tc_smoke.style.color = "var(--smoke-c)";
+          tdsd.textContent = "Çəkmədim — yaxşı!";
+        } else if (obj.smoke === "fail") {
+          th_smoke.classList.add("fail-smoke");
+          tc_smoke.textContent = "🚬";
+          tc_smoke.style.color = "#ef4444";
+          tdsd.textContent = "Bu gün çəkdim";
+        } else {
+          tc_smoke.textContent = "—";
+          tc_smoke.style.color = "";
+          tdsd.textContent = "İşarələmək üçün bas";
+        }
+
+        // Others
+        const habits = [
+          { id: "sport", cls: "done-sport" },
+          { id: "code", cls: "done-code" },
+          { id: "fast", cls: "done-fast" },
+        ];
+        habits.forEach((h) => {
+          const item = document.getElementById("th-" + h.id);
+          const chk = document.getElementById("tc-" + h.id);
+          item.className = "habit-item";
+          if (obj[h.id]) {
+            item.classList.add(h.cls);
+            chk.textContent = "✓";
+            chk.style.color = "";
+          } else {
+            chk.textContent = "—";
+            chk.style.color = "";
+          }
+        });
+      }
+
+      /* ============================================================
+   STATS
+   ============================================================ */
+      function calcStats() {
+        const data = getData();
+        const keys = Object.keys(data).sort();
+        const today = getTodayKey();
+        const validKeys = keys.filter((k) => k <= today);
+        const total = validKeys.length || 1;
+
+        const counts = { smoke: 0, sport: 0, code: 0, fast: 0 };
+        validKeys.forEach((k) => {
+          const o = data[k];
+          if (o.smoke === "free") counts.smoke++;
+          if (o.sport) counts.sport++;
+          if (o.code) counts.code++;
+          if (o.fast) counts.fast++;
+        });
+
+        // Current streaks
+        const streaks = { smoke: 0, sport: 0, code: 0, fast: 0 };
+        ["smoke", "sport", "code", "fast"].forEach((h) => {
+          let d = new Date();
+          for (let i = 0; i < 365; i++) {
+            const k = fmtKey(d.getFullYear(), d.getMonth() + 1, d.getDate());
+            if (k > today) {
+              d.setDate(d.getDate() - 1);
+              continue;
+            }
+            const o = data[k];
+            const ok = h === "smoke" ? o && o.smoke === "free" : o && o[h];
+            if (ok) {
+              streaks[h]++;
+              d.setDate(d.getDate() - 1);
+            } else break;
+          }
+        });
+
+        return { counts, streaks, total };
+      }
+
+      function renderStats() {
+        const { counts, streaks, total } = calcStats();
+        ["smoke", "sport", "code", "fast"].forEach((h) => {
+          document.getElementById("s-" + h).textContent = counts[h];
+          document.getElementById("ss-" + h).textContent =
+            streaks[h] + " gün streak 🔥";
+          const pct = Math.round((counts[h] / total) * 100);
+          document.getElementById("pp-" + h).textContent = pct + "%";
+          document.getElementById("pf-" + h).style.width = pct + "%";
+        });
+        updateSmokeBadge();
+      }
+
+      /* ============================================================
+   CALENDAR
+   ============================================================ */
+      let calYear = new Date().getFullYear();
+      let calMonth = new Date().getMonth(); // 0-based
+
+      function changeMonth(delta) {
+        calMonth += delta;
+        if (calMonth > 11) {
+          calMonth = 0;
+          calYear++;
+        }
+        if (calMonth < 0) {
+          calMonth = 11;
+          calYear--;
+        }
+        renderCalendar();
+      }
+
+      function renderCalendar() {
+        document.getElementById("calTitle").textContent =
+          AZ_MONTHS[calMonth] + " " + calYear;
+
+        const grid = document.getElementById("calGrid");
+        // Remove old day cells
+        grid.querySelectorAll(".cal-day").forEach((e) => e.remove());
+
+        const data = getData();
+        const today = getTodayKey();
+        const firstDow = new Date(calYear, calMonth, 1).getDay(); // 0=Sun
+        const daysInM = new Date(calYear, calMonth + 1, 0).getDate();
+        const todayN = new Date().getDate();
+
+        // Mon-first offset
+        let offset = firstDow === 0 ? 6 : firstDow - 1;
+        for (let i = 0; i < offset; i++) {
+          const e = document.createElement("div");
+          e.className = "cal-day empty";
+          grid.appendChild(e);
+        }
+
+        for (let d = 1; d <= daysInM; d++) {
+          const key = fmtKey(calYear, calMonth + 1, d);
+          const el = document.createElement("div");
+          el.className = "cal-day";
+          el.textContent = d;
+
+          if (isFuture(key)) {
+            el.classList.add("future");
+          } else {
+            el.onclick = () => openModal(key);
+            const obj = data[key];
+            if (key === today) {
+              el.classList.add("today-cell");
+            } else if (obj) {
+              const smokeFree = obj.smoke === "free";
+              const done = [smokeFree, obj.sport, obj.code, obj.fast].filter(
+                Boolean,
+              ).length;
+              const total = 4;
+              if (done === total) el.classList.add("perfect");
+              else if (done > 0) el.classList.add("partial");
+              else if (obj.smoke === "fail") el.classList.add("bad");
+            }
+
+            // Tiny dots for habits
+            if (obj) {
+              const dots = document.createElement("div");
+              dots.className = "cal-dots";
+              const dotColors = [
+                obj.smoke === "free"
+                  ? "var(--smoke-c)"
+                  : obj.smoke === "fail"
+                    ? "#ef4444"
+                    : null,
+                obj.sport ? "var(--sport-c)" : null,
+                obj.code ? "var(--code-c)" : null,
+                obj.fast ? "var(--fast-c)" : null,
+              ].filter(Boolean);
+              dotColors.slice(0, 4).forEach((c) => {
+                const dot = document.createElement("div");
+                dot.className = "cal-dot";
+                dot.style.background = c;
+                dots.appendChild(dot);
+              });
+              if (dotColors.length) el.appendChild(dots);
+            }
+          }
+
+          grid.appendChild(el);
+        }
+
+        // Disable next month if it's beyond current
+        const nowYear = new Date().getFullYear();
+        const nowMonth = new Date().getMonth();
+        document.getElementById("calNext").style.opacity =
+          calYear > nowYear || (calYear === nowYear && calMonth >= nowMonth)
+            ? "0.3"
+            : "1";
+        document.getElementById("calNext").style.pointerEvents =
+          calYear > nowYear || (calYear === nowYear && calMonth >= nowMonth)
+            ? "none"
+            : "auto";
+      }
+
+      /* ============================================================
+   CHART (custom SVG)
+   ============================================================ */
+      function renderChart() {
+        const container = document.getElementById("chartContainer");
+        container.innerHTML = "";
+
+        const data = getData();
+        const today = getTodayKey();
+        const labels = [],
+          smokeD = [],
+          sportD = [],
+          codeD = [],
+          fastD = [];
+
+        for (let i = 13; i >= 0; i--) {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          const key = fmtKey(d.getFullYear(), d.getMonth() + 1, d.getDate());
+          const obj = data[key] || {};
+          labels.push(d.getDate() + "/" + (d.getMonth() + 1));
+          smokeD.push(obj.smoke === "free" ? 1 : 0);
+          sportD.push(obj.sport ? 1 : 0);
+          codeD.push(obj.code ? 1 : 0);
+          fastD.push(obj.fast ? 1 : 0);
+        }
+
+        const W = container.offsetWidth || 600;
+        const H = 190;
+        const padL = 10,
+          padR = 10,
+          padT = 10,
+          padB = 28;
+        const plotW = W - padL - padR;
+        const plotH = H - padT - padB;
+        const cols = labels.length;
+        const colW = plotW / cols;
+
+        const habits = [
+          { d: smokeD, c: "var(--smoke-c)", r: "#10b981" },
+          { d: sportD, c: "var(--sport-c)", r: "#f59e0b" },
+          { d: codeD, c: "var(--code-c)", r: "#818cf8" },
+          { d: fastD, c: "var(--fast-c)", r: "#06b6d4" },
+        ];
+
+        let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+
+        // Grid lines
+        for (let g = 1; g <= 3; g++) {
+          const y = padT + plotH * (1 - g / 4);
+          svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`;
+        }
+
+        // Bars — side by side
+        const numH = 4;
+        const barW = (colW - 6) / numH;
+        habits.forEach((h, hi) => {
+          h.d.forEach((v, i) => {
+            if (!v) return;
+            const x = padL + i * colW + 3 + hi * barW;
+            const bh = plotH * 0.9;
+            const y = padT + plotH - bh;
+            svg += `<rect x="${x}" y="${y}" width="${barW - 2}" height="${bh}" rx="3" fill="${h.r}" opacity="0.85"/>`;
+            // glow top
+            svg += `<rect x="${x}" y="${y}" width="${barW - 2}" height="3" rx="2" fill="${h.r}"/>`;
+          });
+        });
+
+        // X labels
+        labels.forEach((l, i) => {
+          const x = padL + i * colW + colW / 2;
+          svg += `<text x="${x}" y="${H - 6}" text-anchor="middle" fill="rgba(130,163,200,0.7)" font-size="9" font-family="Open Sans">${l}</text>`;
+        });
+
+        svg += "</svg>";
+        container.innerHTML = svg;
+      }
+
+      /* ============================================================
+   MODAL
+   ============================================================ */
+      let modalKey = null;
+      let modalState = { smoke: null, sport: false, code: false, fast: false };
+
+      function openModal(key) {
+        if (isFuture(key)) return;
+        modalKey = key;
+        modalState = { ...getDayObj(key) };
+
+        const dt = keyToDate(key);
+        document.getElementById("modalDateBig").textContent =
+          AZ_DAYS[dt.getDay()] +
+          ", " +
+          dt.getDate() +
+          " " +
+          AZ_MONTHS[dt.getMonth()] +
+          " " +
+          dt.getFullYear();
+        document.getElementById("modalDateSub").textContent =
+          key === getTodayKey() ? "📅 Bu gün" : "📅 Keçmiş gün";
+
+        renderModalState();
+        document.getElementById("modalOverlay").classList.add("open");
+      }
+
+      function closeModal() {
+        document.getElementById("modalOverlay").classList.remove("open");
+        modalKey = null;
+      }
+
+      function handleOverlayClick(e) {
+        if (e.target === document.getElementById("modalOverlay")) closeModal();
+      }
+
+      function setSmokeOpt(val) {
+        modalState.smoke = modalState.smoke === val ? null : val;
+        renderModalState();
+      }
+
+      function toggleModal(habit) {
+        modalState[habit] = !modalState[habit];
+        renderModalState();
+      }
+
+      function renderModalState() {
+        // Smoke opts
+        document.getElementById("opt-free").className =
+          "smoke-opt" + (modalState.smoke === "free" ? " sel-free" : "");
+        document.getElementById("opt-fail").className =
+          "smoke-opt" + (modalState.smoke === "fail" ? " sel-fail" : "");
+        document.getElementById("opt-none").className =
+          "smoke-opt" + (modalState.smoke === null ? " sel-free" : "");
+
+        // Sport
+        const mt_sport = document.getElementById("mt-sport");
+        mt_sport.className =
+          "modal-toggle" + (modalState.sport ? " on on-sport" : "");
+        document.getElementById("mh-sport").className =
+          "modal-habit" + (modalState.sport ? " active-sport" : "");
+
+        // Code
+        const mt_code = document.getElementById("mt-code");
+        mt_code.className =
+          "modal-toggle" + (modalState.code ? " on on-code" : "");
+        document.getElementById("mh-code").className =
+          "modal-habit" + (modalState.code ? " active-code" : "");
+
+        // Fast
+        const mt_fast = document.getElementById("mt-fast");
+        mt_fast.className =
+          "modal-toggle" + (modalState.fast ? " on on-fast" : "");
+        document.getElementById("mh-fast").className =
+          "modal-habit" + (modalState.fast ? " active-fast" : "");
+      }
+
+      function saveModal() {
+        if (!modalKey) return;
+        setDayObj(modalKey, { ...modalState });
+        closeModal();
+        renderAll();
+        // Flash effect
+        document.querySelectorAll(".card").forEach((c) => {
+          c.style.transition = "box-shadow 0.3s";
+          c.style.boxShadow =
+            "0 0 0 1px var(--blue), 0 8px 40px rgba(14,165,233,0.2)";
+          setTimeout(() => (c.style.boxShadow = ""), 500);
+        });
+      }
+
+      /* ============================================================
+   THEME
+   ============================================================ */
+      function toggleTheme() {
+        const html = document.documentElement;
+        const cur = html.getAttribute("data-theme");
+        const next = cur === "dark" ? "light" : "dark";
+        html.setAttribute("data-theme", next);
+        localStorage.setItem("caspianDiv_theme", next);
+        document.getElementById("themeBtn").textContent =
+          next === "dark" ? "🌙" : "☀️";
+      }
+
+      function loadTheme() {
+        const saved = localStorage.getItem("caspianDiv_theme");
+        if (saved) {
+          document.documentElement.setAttribute("data-theme", saved);
+          document.getElementById("themeBtn").textContent =
+            saved === "dark" ? "🌙" : "☀️";
+        }
+      }
+
+      /* ============================================================
+   MASTER RENDER
+   ============================================================ */
+      function renderAll() {
+        renderToday();
+        renderStats();
+        renderCalendar();
+        renderChart();
+        updateRamadan();
+        updateHeaderTime();
+      }
+
+      /* ============================================================
+   INIT
+   ============================================================ */
+      loadTheme();
+
+      // Init from known start dates (2026-02-21 and 2026-02-22 as smoke-free if no data)
+      function seedInitialData() {
+        const data = getData();
+        // Seed smoke-free days since start if not yet set
+        const start = new Date(SMOKE_START);
+        const today = new Date();
+        for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+          const key = fmtKey(d.getFullYear(), d.getMonth() + 1, d.getDate());
+          if (!data[key]) {
+            data[key] = {
+              smoke: "free",
+              sport: false,
+              code: false,
+              fast: false,
+            };
+          }
+        }
+        saveData(data);
+      }
+      seedInitialData();
+
+      setTimeout(() => {
+        renderAll();
+        setInterval(updateHeaderTime, 1000);
+        window.addEventListener("resize", () => {
+          renderChart();
+        });
+      }, 3500);
+    </script>
+  </body>
+</html>
