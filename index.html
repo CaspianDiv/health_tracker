@@ -296,7 +296,6 @@
         localStorage.setItem(STORE_KEY, JSON.stringify(d));
       }
 
-      // null qaytarır əgər həmin gün üçün heç bir məlumat yoxdursa
       function getDayObj(key) {
         const d = getData();
         return d[key] || null;
@@ -340,8 +339,9 @@
 
       /* ============================================================
          SMOKE BADGE
-         — Yalnız localStorage-da "free" işarəli ardıcıl günlər sayılır
-         — Heç bir avtomatik doldurma yoxdur
+         ✅ DÜZƏLDİLDİ: SMOKE_START tarixindən bu günə qədər avtomatik sayır.
+         Əgər bir gün localStorage-da "fail" kimi işarələnibsə — streak bitir.
+         İşarə edilməmiş günlər (boş) siqaretsiz sayılır.
       ============================================================ */
       function updateSmokeBadge() {
         const data = getData();
@@ -351,12 +351,15 @@
         for (let i = 0; i < 365; i++) {
           const key = fmtKey(d.getFullYear(), d.getMonth()+1, d.getDate());
           if (key > getTodayKey()) { d.setDate(d.getDate()-1); continue; }
+          if (key < SMOKE_START)   break; // start tarixindən əvvəl dayanır
           const obj = data[key];
-          if (obj && obj.smoke === "free") {
+          // Əgər "fail" işarəsi varsa — streak bitir
+          // "free" və ya heç bir işarə yoxdursa — siqaretsiz sayılır
+          if (obj && obj.smoke === "fail") {
+            break;
+          } else {
             streak++;
             d.setDate(d.getDate()-1);
-          } else {
-            break; // işarə yoxdur və ya "fail" — streak bitdi
           }
         }
         document.getElementById("sfBadgeNum").textContent = streak;
@@ -367,7 +370,7 @@
       ============================================================ */
       function renderToday() {
         const key = getTodayKey();
-        const obj = getDayObj(key); // null əgər seçilməyibsə
+        const obj = getDayObj(key);
 
         const th_smoke = document.getElementById("th-smoke");
         const tc_smoke = document.getElementById("tc-smoke");
@@ -410,7 +413,7 @@
       }
 
       /* ============================================================
-         STATS — Yalnız real seçilmiş günlər
+         STATS
       ============================================================ */
       function calcStats() {
         const data  = getData();
@@ -496,7 +499,7 @@
             el.classList.add("future");
           } else {
             el.onclick = () => openModal(key);
-            const obj = data[key]; // null əgər işarə edilməyibsə
+            const obj = data[key];
 
             if (key === today) {
               el.classList.add("today-cell");
@@ -507,7 +510,6 @@
               else if (done > 0)       el.classList.add("partial");
               else if (obj.smoke === "fail") el.classList.add("bad");
             }
-            // obj yoxdursa — işarə edilməmiş, rəng yoxdur
 
             if (obj) {
               const dots = document.createElement("div");
@@ -607,7 +609,6 @@
         if (isFuture(key)) return;
         modalKey = key;
 
-        // Mövcud məlumat varsa yüklə, yoxdursa tamamilə boş başla
         const existing = getDayObj(key);
         modalState = existing
           ? { ...existing }
@@ -633,7 +634,6 @@
       }
 
       function setSmokeOpt(val) {
-        // Eyni düyməyə yenidən bassanız seçim ləğv olur (toggle)
         modalState.smoke = modalState.smoke === val ? null : val;
         renderModalState();
       }
@@ -691,8 +691,6 @@
 
       /* ============================================================
          MASTER RENDER
-         ✅ seedInitialData() silindi — heç bir gün avtomatik doldurulmur
-         ✅ Yalnız sən özün "Yadda saxla" bassanız məlumat qalır
       ============================================================ */
       function renderAll() {
         renderToday();
