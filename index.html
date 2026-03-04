@@ -188,7 +188,7 @@
           <div class="card">
             <div class="cal-nav">
               <button class="cal-arrow" id="calPrev" onclick="changeMonth(-1)">◀</button>
-              <div class="cal-month" id="calTitle">Fevral 2026</div>
+              <div class="cal-month" id="calTitle">Mart 2026</div>
               <button class="cal-arrow" id="calNext" onclick="changeMonth(1)">▶</button>
             </div>
             <div class="cal-grid" id="calGrid">
@@ -200,17 +200,6 @@
               <div class="cal-dname">Ş</div>
               <div class="cal-dname">B</div>
             </div>
-            <div style="display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap;">
-              <div style="display: flex; align-items: center; gap: 5px; font-size: 0.65rem; color: var(--text3);">
-                <div style="width: 10px; height: 10px; border-radius: 3px; background: rgba(16, 185, 129, 0.3);"></div>Mükəmməl
-              </div>
-              <div style="display: flex; align-items: center; gap: 5px; font-size: 0.65rem; color: var(--text3);">
-                <div style="width: 10px; height: 10px; border-radius: 3px; background: rgba(245, 158, 11, 0.25);"></div>Qismən
-              </div>
-              <div style="display: flex; align-items: center; gap: 5px; font-size: 0.65rem; color: var(--text3);">
-                <div style="width: 10px; height: 10px; border-radius: 3px; background: rgba(14, 165, 233, 0.2); border: 1px solid var(--blue);"></div>Bu gün
-              </div>
-            </div>
           </div>
 
           <div class="card">
@@ -219,26 +208,11 @@
               Son 14 Gün Aktivliyi
             </div>
             <div class="chart-container" id="chartContainer"></div>
-            <div style="display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap;">
-              <div style="display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--text3);">
-                <div style="width: 10px; height: 10px; border-radius: 3px; background: var(--smoke-c);"></div>🚭 Sigaret
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--text3);">
-                <div style="width: 10px; height: 10px; border-radius: 3px; background: var(--sport-c);"></div>🏃 İdman
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--text3);">
-                <div style="width: 10px; height: 10px; border-radius: 3px; background: var(--code-c);"></div>💻 Kod
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--text3);">
-                <div style="width: 10px; height: 10px; border-radius: 3px; background: var(--fast-c);"></div>🌙 Oruc
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- MODAL -->
     <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
       <div class="modal" id="modal">
         <div class="modal-top">
@@ -286,7 +260,6 @@
          STORAGE
       ============================================================ */
       const STORE_KEY  = "caspianDiv_v2";
-      const SMOKE_START = "2026-02-22";
 
       function getData() {
         try { return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }
@@ -295,12 +268,10 @@
       function saveData(d) {
         localStorage.setItem(STORE_KEY, JSON.stringify(d));
       }
-
       function getDayObj(key) {
         const d = getData();
         return d[key] || null;
       }
-
       function setDayObj(key, obj) {
         const d = getData();
         d[key] = obj;
@@ -327,7 +298,7 @@
       function isFuture(key) { return key > getTodayKey(); }
 
       /* ============================================================
-         HEADER DATE/TIME
+         CORE FUNCTIONS
       ============================================================ */
       function updateHeaderTime() {
         const n = new Date();
@@ -337,82 +308,55 @@
           n.toLocaleTimeString("az", { hour:"2-digit", minute:"2-digit", second:"2-digit" });
       }
 
-      /* ============================================================
-         SMOKE BADGE
-         ✅ DÜZƏLDİLDİ: SMOKE_START tarixindən bu günə qədər avtomatik sayır.
-         Əgər bir gün localStorage-da "fail" kimi işarələnibsə — streak bitir.
-         İşarə edilməmiş günlər (boş) siqaretsiz sayılır.
-      ============================================================ */
-    function updateSmokeBadge() {
-  const data = getData();
-  let totalFreeDays = 0; // Cəmi siqaretsiz günlər
-  
-  // Bütün qeyd olunmuş tarixləri yoxlayırıq
-  Object.keys(data).forEach(key => {
-    // Əgər o gün üçün siqaret statusu "free" (çəkmədim) olaraq qeyd edilibsə
-    if (data[key] && data[key].smoke === "free") {
-      totalFreeDays++;
-    }
-  });
+      function updateSmokeBadge() {
+        const data = getData();
+        let totalFreeDays = 0;
+        Object.keys(data).forEach(key => {
+          if (data[key] && data[key].smoke === "free") {
+            totalFreeDays++;
+          }
+        });
+        document.getElementById("sfBadgeNum").textContent = totalFreeDays;
+      }
 
-  // Badge-də cəmi gün sayını göstəririk
-  document.getElementById("sfBadgeNum").textContent = totalFreeDays;
-}}
-
-      /* ============================================================
-         TODAY CARD
-      ============================================================ */
       function renderToday() {
         const key = getTodayKey();
         const obj = getDayObj(key);
-
         const th_smoke = document.getElementById("th-smoke");
         const tc_smoke = document.getElementById("tc-smoke");
-        const tdsd     = document.getElementById("td-smoke-desc");
+        const tdsd = document.getElementById("td-smoke-desc");
+        
         th_smoke.className = "habit-item";
-
         if (obj && obj.smoke === "free") {
           th_smoke.classList.add("done-smoke");
-          tc_smoke.textContent = "🚭";
-          tc_smoke.style.color = "var(--smoke-c)";
+          tc_smoke.textContent = "✅";
           tdsd.textContent = "Çəkmədim — yaxşı!";
         } else if (obj && obj.smoke === "fail") {
           th_smoke.classList.add("fail-smoke");
           tc_smoke.textContent = "🚬";
-          tc_smoke.style.color = "#ef4444";
           tdsd.textContent = "Bu gün çəkdim";
         } else {
           tc_smoke.textContent = "—";
-          tc_smoke.style.color = "";
           tdsd.textContent = "İşarələmək üçün bas";
         }
 
-        [
-          { id:"sport", cls:"done-sport" },
-          { id:"code",  cls:"done-code"  },
-          { id:"fast",  cls:"done-fast"  },
-        ].forEach(h => {
-          const item = document.getElementById("th-" + h.id);
-          const chk  = document.getElementById("tc-" + h.id);
+        ["sport","code","fast"].forEach(id => {
+          const item = document.getElementById("th-" + id);
+          const chk  = document.getElementById("tc-" + id);
           item.className = "habit-item";
-          if (obj && obj[h.id]) {
-            item.classList.add(h.cls);
+          if (obj && obj[id]) {
+            item.classList.add("done-" + id);
             chk.textContent = "✓";
-            chk.style.color = "";
           } else {
             chk.textContent = "—";
-            chk.style.color = "";
           }
         });
       }
 
-      /* ============================================================
-         STATS
-      ============================================================ */
-      function calcStats() {
-        const data  = getData();
+      function renderStats() {
+        const data = getData();
         const today = getTodayKey();
-        const keys  = Object.keys(data).filter(k => k <= today).sort();
+        const keys = Object.keys(data).filter(k => k <= today);
         const total = keys.length || 1;
 
         const counts = { smoke:0, sport:0, code:0, fast:0 };
@@ -424,59 +368,50 @@
           if (o.fast)  counts.fast++;
         });
 
-        const streaks = { smoke:0, sport:0, code:0, fast:0 };
         ["smoke","sport","code","fast"].forEach(h => {
-          let d = new Date();
-          for (let i = 0; i < 365; i++) {
-            const k = fmtKey(d.getFullYear(), d.getMonth()+1, d.getDate());
-            if (k > today) { d.setDate(d.getDate()-1); continue; }
-            const o  = data[k];
-            const ok = h === "smoke" ? (o && o.smoke === "free") : (o && o[h]);
-            if (ok) { streaks[h]++; d.setDate(d.getDate()-1); }
-            else break;
-          }
-        });
-
-        return { counts, streaks, total };
-      }
-
-      function renderStats() {
-        const { counts, streaks, total } = calcStats();
-        ["smoke","sport","code","fast"].forEach(h => {
-          document.getElementById("s-"  + h).textContent = counts[h];
-          document.getElementById("ss-" + h).textContent =
-            streaks[h] > 0 ? streaks[h] + " gün streak 🔥" : "— gün streak";
+          document.getElementById("s-" + h).textContent = counts[h];
           const pct = Math.round((counts[h] / total) * 100);
           document.getElementById("pp-" + h).textContent = pct + "%";
           document.getElementById("pf-" + h).style.width = pct + "%";
+          
+          // Streak hesablama (sadə)
+          let streak = 0;
+          let d = new Date();
+          while(true) {
+            let k = fmtKey(d.getFullYear(), d.getMonth()+1, d.getDate());
+            let o = data[k];
+            let ok = h === "smoke" ? (o && o.smoke === "free") : (o && o[h]);
+            if(ok) { streak++; d.setDate(d.getDate()-1); }
+            else break;
+          }
+          document.getElementById("ss-" + h).textContent = streak + " gün streak 🔥";
         });
         updateSmokeBadge();
       }
 
       /* ============================================================
-         CALENDAR
+         CALENDAR LOGIC
       ============================================================ */
-      let calYear  = new Date().getFullYear();
+      let calYear = new Date().getFullYear();
       let calMonth = new Date().getMonth();
 
       function changeMonth(delta) {
         calMonth += delta;
-        if (calMonth > 11) { calMonth = 0;  calYear++; }
-        if (calMonth < 0)  { calMonth = 11; calYear--; }
+        if (calMonth > 11) { calMonth = 0; calYear++; }
+        else if (calMonth < 0) { calMonth = 11; calYear--; }
         renderCalendar();
       }
 
       function renderCalendar() {
         document.getElementById("calTitle").textContent = AZ_MONTHS[calMonth] + " " + calYear;
-        const grid    = document.getElementById("calGrid");
+        const grid = document.getElementById("calGrid");
         grid.querySelectorAll(".cal-day").forEach(e => e.remove());
 
-        const data     = getData();
-        const today    = getTodayKey();
+        const data = getData();
         const firstDow = new Date(calYear, calMonth, 1).getDay();
-        const daysInM  = new Date(calYear, calMonth+1, 0).getDate();
-
+        const daysInM = new Date(calYear, calMonth+1, 0).getDate();
         let offset = firstDow === 0 ? 6 : firstDow - 1;
+
         for (let i = 0; i < offset; i++) {
           const e = document.createElement("div");
           e.className = "cal-day empty";
@@ -485,8 +420,8 @@
 
         for (let d = 1; d <= daysInM; d++) {
           const key = fmtKey(calYear, calMonth+1, d);
-          const el  = document.createElement("div");
-          el.className   = "cal-day";
+          const el = document.createElement("div");
+          el.className = "cal-day";
           el.textContent = d;
 
           if (isFuture(key)) {
@@ -494,141 +429,43 @@
           } else {
             el.onclick = () => openModal(key);
             const obj = data[key];
-
-            if (key === today) {
-              el.classList.add("today-cell");
-            } else if (obj) {
-              const smokeFree = obj.smoke === "free";
-              const done = [smokeFree, obj.sport, obj.code, obj.fast].filter(Boolean).length;
-              if (done === 4)          el.classList.add("perfect");
-              else if (done > 0)       el.classList.add("partial");
-              else if (obj.smoke === "fail") el.classList.add("bad");
-            }
-
+            if (key === getTodayKey()) el.classList.add("today-cell");
             if (obj) {
-              const dots = document.createElement("div");
-              dots.className = "cal-dots";
-              const dotColors = [
-                obj.smoke === "free" ? "var(--smoke-c)" : obj.smoke === "fail" ? "#ef4444" : null,
-                obj.sport ? "var(--sport-c)" : null,
-                obj.code  ? "var(--code-c)"  : null,
-                obj.fast  ? "var(--fast-c)"  : null,
-              ].filter(Boolean);
-              dotColors.slice(0,4).forEach(c => {
-                const dot = document.createElement("div");
-                dot.className = "cal-dot";
-                dot.style.background = c;
-                dots.appendChild(dot);
-              });
-              if (dotColors.length) el.appendChild(dots);
+              const count = [obj.smoke==="free", obj.sport, obj.code, obj.fast].filter(Boolean).length;
+              if (count === 4) el.classList.add("perfect");
+              else if (count > 0) el.classList.add("partial");
             }
           }
           grid.appendChild(el);
         }
-
-        const nowYear  = new Date().getFullYear();
-        const nowMonth = new Date().getMonth();
-        const nextDisabled = calYear > nowYear || (calYear === nowYear && calMonth >= nowMonth);
-        document.getElementById("calNext").style.opacity       = nextDisabled ? "0.3" : "1";
-        document.getElementById("calNext").style.pointerEvents = nextDisabled ? "none" : "auto";
       }
 
       /* ============================================================
-         CHART
+         MODAL LOGIC
       ============================================================ */
-      function renderChart() {
-        const container = document.getElementById("chartContainer");
-        container.innerHTML = "";
-        const data = getData();
-        const labels = [], smokeD = [], sportD = [], codeD = [], fastD = [];
-
-        for (let i = 13; i >= 0; i--) {
-          const d = new Date();
-          d.setDate(d.getDate() - i);
-          const key = fmtKey(d.getFullYear(), d.getMonth()+1, d.getDate());
-          const obj = data[key] || {};
-          labels.push(d.getDate() + "/" + (d.getMonth()+1));
-          smokeD.push(obj.smoke === "free" ? 1 : 0);
-          sportD.push(obj.sport ? 1 : 0);
-          codeD.push(obj.code  ? 1 : 0);
-          fastD.push(obj.fast  ? 1 : 0);
-        }
-
-        const W = container.offsetWidth || 600;
-        const H = 190, padL = 10, padR = 10, padT = 10, padB = 28;
-        const plotW = W - padL - padR;
-        const plotH = H - padT - padB;
-        const cols  = labels.length;
-        const colW  = plotW / cols;
-
-        const habits = [
-          { d: smokeD, r: "#10b981" },
-          { d: sportD, r: "#f59e0b" },
-          { d: codeD,  r: "#818cf8" },
-          { d: fastD,  r: "#06b6d4" },
-        ];
-
-        let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-        for (let g = 1; g <= 3; g++) {
-          const y = padT + plotH * (1 - g/4);
-          svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`;
-        }
-        const numH = 4;
-        const barW = (colW - 6) / numH;
-        habits.forEach((h, hi) => {
-          h.d.forEach((v, i) => {
-            if (!v) return;
-            const x  = padL + i*colW + 3 + hi*barW;
-            const bh = plotH * 0.9;
-            const y  = padT + plotH - bh;
-            svg += `<rect x="${x}" y="${y}" width="${barW-2}" height="${bh}" rx="3" fill="${h.r}" opacity="0.85"/>`;
-            svg += `<rect x="${x}" y="${y}" width="${barW-2}" height="3" rx="2" fill="${h.r}"/>`;
-          });
-        });
-        labels.forEach((l, i) => {
-          const x = padL + i*colW + colW/2;
-          svg += `<text x="${x}" y="${H-6}" text-anchor="middle" fill="rgba(130,163,200,0.7)" font-size="9" font-family="Open Sans">${l}</text>`;
-        });
-        svg += "</svg>";
-        container.innerHTML = svg;
-      }
-
-      /* ============================================================
-         MODAL
-      ============================================================ */
-      let modalKey   = null;
+      let modalKey = null;
       let modalState = { smoke: null, sport: false, code: false, fast: false };
 
       function openModal(key) {
         if (isFuture(key)) return;
         modalKey = key;
-
         const existing = getDayObj(key);
-        modalState = existing
-          ? { ...existing }
-          : { smoke: null, sport: false, code: false, fast: false };
-
+        modalState = existing ? { ...existing } : { smoke: null, sport: false, code: false, fast: false };
+        
         const dt = keyToDate(key);
-        document.getElementById("modalDateBig").textContent =
-          AZ_DAYS[dt.getDay()] + ", " + dt.getDate() + " " + AZ_MONTHS[dt.getMonth()] + " " + dt.getFullYear();
-        document.getElementById("modalDateSub").textContent =
-          key === getTodayKey() ? "📅 Bu gün" : "📅 Keçmiş gün";
-
+        document.getElementById("modalDateBig").textContent = dt.getDate() + " " + AZ_MONTHS[dt.getMonth()];
+        document.getElementById("modalDateSub").textContent = key === getTodayKey() ? "Bugün" : "Keçmiş gün";
+        
         renderModalState();
         document.getElementById("modalOverlay").classList.add("open");
       }
 
       function closeModal() {
         document.getElementById("modalOverlay").classList.remove("open");
-        modalKey = null;
-      }
-
-      function handleOverlayClick(e) {
-        if (e.target === document.getElementById("modalOverlay")) closeModal();
       }
 
       function setSmokeOpt(val) {
-        modalState.smoke = modalState.smoke === val ? null : val;
+        modalState.smoke = (modalState.smoke === val) ? null : val;
         renderModalState();
       }
 
@@ -640,70 +477,41 @@
       function renderModalState() {
         document.getElementById("opt-free").className = "smoke-opt" + (modalState.smoke === "free" ? " sel-free" : "");
         document.getElementById("opt-fail").className = "smoke-opt" + (modalState.smoke === "fail" ? " sel-fail" : "");
-        document.getElementById("opt-none").className = "smoke-opt" + (modalState.smoke === null  ? " sel-free" : "");
-
         document.getElementById("mt-sport").className = "modal-toggle" + (modalState.sport ? " on on-sport" : "");
-        document.getElementById("mh-sport").className = "modal-habit"  + (modalState.sport ? " active-sport" : "");
-
-        document.getElementById("mt-code").className  = "modal-toggle" + (modalState.code  ? " on on-code"  : "");
-        document.getElementById("mh-code").className  = "modal-habit"  + (modalState.code  ? " active-code"  : "");
-
-        document.getElementById("mt-fast").className  = "modal-toggle" + (modalState.fast  ? " on on-fast"  : "");
-        document.getElementById("mh-fast").className  = "modal-habit"  + (modalState.fast  ? " active-fast"  : "");
+        document.getElementById("mt-code").className = "modal-toggle" + (modalState.code ? " on on-code" : "");
+        document.getElementById("mt-fast").className = "modal-toggle" + (modalState.fast ? " on on-fast" : "");
       }
 
       function saveModal() {
-        if (!modalKey) return;
-        setDayObj(modalKey, { ...modalState });
+        setDayObj(modalKey, modalState);
         closeModal();
         renderAll();
-        document.querySelectorAll(".card").forEach(c => {
-          c.style.transition = "box-shadow 0.3s";
-          c.style.boxShadow  = "0 0 0 1px var(--blue), 0 8px 40px rgba(14,165,233,0.2)";
-          setTimeout(() => (c.style.boxShadow = ""), 500);
-        });
       }
 
-      /* ============================================================
-         THEME
-      ============================================================ */
+      function handleOverlayClick(e) {
+        if (e.target.id === "modalOverlay") closeModal();
+      }
+
       function toggleTheme() {
-        const html = document.documentElement;
-        const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        html.setAttribute("data-theme", next);
-        localStorage.setItem("caspianDiv_theme", next);
+        const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
         document.getElementById("themeBtn").textContent = next === "dark" ? "🌙" : "☀️";
       }
 
-      function loadTheme() {
-        const saved = localStorage.getItem("caspianDiv_theme");
-        if (saved) {
-          document.documentElement.setAttribute("data-theme", saved);
-          document.getElementById("themeBtn").textContent = saved === "dark" ? "🌙" : "☀️";
-        }
-      }
-
-      /* ============================================================
-         MASTER RENDER
-      ============================================================ */
       function renderAll() {
         renderToday();
         renderStats();
         renderCalendar();
-        renderChart();
         updateHeaderTime();
       }
 
       /* ============================================================
          INIT
       ============================================================ */
-      loadTheme();
-
       setTimeout(() => {
         renderAll();
         setInterval(updateHeaderTime, 1000);
-        window.addEventListener("resize", renderChart);
-      }, 3500);
+      }, 3000);
     </script>
   </body>
 </html>
