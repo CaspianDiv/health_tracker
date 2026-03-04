@@ -343,27 +343,21 @@
          Əgər bir gün localStorage-da "fail" kimi işarələnibsə — streak bitir.
          İşarə edilməmiş günlər (boş) siqaretsiz sayılır.
       ============================================================ */
-      function updateSmokeBadge() {
-        const data = getData();
-        let streak = 0;
-        let d = new Date();
+    function updateSmokeBadge() {
+  const data = getData();
+  let totalFreeDays = 0; // Cəmi siqaretsiz günlər
+  
+  // Bütün qeyd olunmuş tarixləri yoxlayırıq
+  Object.keys(data).forEach(key => {
+    // Əgər o gün üçün siqaret statusu "free" (çəkmədim) olaraq qeyd edilibsə
+    if (data[key] && data[key].smoke === "free") {
+      totalFreeDays++;
+    }
+  });
 
-        for (let i = 0; i < 365; i++) {
-          const key = fmtKey(d.getFullYear(), d.getMonth()+1, d.getDate());
-          if (key > getTodayKey()) { d.setDate(d.getDate()-1); continue; }
-          if (key < SMOKE_START)   break; // start tarixindən əvvəl dayanır
-          const obj = data[key];
-          // Əgər "fail" işarəsi varsa — streak bitir
-          // "free" və ya heç bir işarə yoxdursa — siqaretsiz sayılır
-          if (obj && obj.smoke === "fail") {
-            break;
-          } else {
-            streak++;
-            d.setDate(d.getDate()-1);
-          }
-        }
-        document.getElementById("sfBadgeNum").textContent = streak;
-      }
+  // Badge-də cəmi gün sayını göstəririk
+  document.getElementById("sfBadgeNum").textContent = totalFreeDays;
+}}
 
       /* ============================================================
          TODAY CARD
